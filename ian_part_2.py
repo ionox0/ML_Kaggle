@@ -22,7 +22,6 @@ from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
 
-
 # In[2]:
 
 # Load
@@ -92,33 +91,34 @@ coorelated_features = ['q', 'aa', 'bb', 'vv', 'ww']
 rfe_selected_numeric_cols = ['x', 'p', 'dd', 'kk']
 
 
-# In[4]:
+# In[85]:
 
 def cross_val(clf, train_data, train_labels):
     error_rates = []
-    for i in range(3):
+    for i in range(10):
         # todo - kfold cross val
         x_train, x_test, y_train, y_test = train_test_split(train_data, train_labels, test_size=0.4)
-        clf_trained = clf().fit(x_train, y_train)
+        clf_trained = clf.fit(x_train, y_train)
         e = clf_trained.score(x_test, y_test)
         error_rates.append(e)
     
     return np.mean(error_rates)
 
 
-# In[54]:
+# In[89]:
 
-# Training error using numeric c
+# Training error using numeric columns
 labels = np.array(train['aaa']).astype(int)
 # Keep label out of features
 e = cross_val(DecisionTreeClassifier, train[coorelated_features], labels)
 print(e)
 
 
-# In[74]:
+# In[91]:
 
 # Training error using categorical columns
 
+# Method to convert to one-hot encodings
 def encode_as_labels(X):
     output = X.copy()
     if X.columns is not None:
@@ -129,13 +129,11 @@ def encode_as_labels(X):
             output[colname] = LabelEncoder().fit_transform(col)
     return output
 
-
 enc_train = encode_as_labels(train[categorical_cols])
-print(enc_train.shape)
-
 
 labels = np.array(train['aaa']).astype(int)
-e = cross_val(RandomForestClassifier, enc_train, labels)
+r = RandomForestClassifier(n_estimators=100)
+e = cross_val(r, enc_train, labels)
 print(e)
 
 
@@ -144,6 +142,18 @@ print(e)
 # Make predictions using numeric columns
 trained = KNeighborsClassifier().fit(train[numeric_cols[:-1]], train['aaa'])
 preds = trained.predict(np.array(test[numeric_cols[:-1]]))
+write_results(preds)
+
+
+# In[84]:
+
+# Make predictions using categorical columns
+enc_train = encode_as_labels(train[categorical_cols])
+labels = np.array(train['aaa']).astype(int)
+trained = RandomForestClassifier(n_estimators=100).fit(enc_train, labels)
+
+enc_test = encode_as_labels(test[categorical_cols])
+preds = trained.predict(enc_test)
 write_results(preds)
 
 
