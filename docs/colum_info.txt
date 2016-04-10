@@ -1,0 +1,1098 @@
+
+File Analysis Results:
+  format type         csv
+  field count         53
+  record count        126838
+  hasheader           True
+  delimiter           ,
+  csv quoting         False
+  skipinitialspace    False
+  quoting             QUOTE_NONE
+  doublequote         False
+  quotechar           "
+  lineterminator      '\n'
+  escapechar          None
+
+Field Analysis Progress:
+   Analyzing field: 0
+   Analyzing field: 1
+   Analyzing field: 2
+   Analyzing field: 3
+   Analyzing field: 4
+   Analyzing field: 5
+   Analyzing field: 6
+   Analyzing field: 7
+   Analyzing field: 8
+   Analyzing field: 9
+   Analyzing field: 10
+   Analyzing field: 11
+   Analyzing field: 12
+   Analyzing field: 13
+   Analyzing field: 14
+   Analyzing field: 15
+   Analyzing field: 16
+   Analyzing field: 17
+   Analyzing field: 18
+   Analyzing field: 19
+   Analyzing field: 20
+   Analyzing field: 21
+   Analyzing field: 22
+   Analyzing field: 23
+   Analyzing field: 24
+   Analyzing field: 25
+   Analyzing field: 26
+   Analyzing field: 27
+   Analyzing field: 28
+   Analyzing field: 29
+   Analyzing field: 30
+   Analyzing field: 31
+   Analyzing field: 32
+   Analyzing field: 33
+   Analyzing field: 34
+   Analyzing field: 35
+   Analyzing field: 36
+   Analyzing field: 37
+   Analyzing field: 38
+   Analyzing field: 39
+   Analyzing field: 40
+   Analyzing field: 41
+   Analyzing field: 42
+   Analyzing field: 43
+   Analyzing field: 44
+   Analyzing field: 45
+   Analyzing field: 46
+   Analyzing field: 47
+   Analyzing field: 48
+   Analyzing field: 49
+   Analyzing field: 50
+   Analyzing field: 51
+   Analyzing field: 52
+
+Field Analysis Results
+
+      ------------------------------------------------------
+      Name                a
+      Field Number        0
+      Wrong Field Cnt     0
+      Type                string
+      Min                 dctc
+      Max                 relpro
+      Unique Values       13
+      Known Values        13
+      Case                lower
+      Min Length          2
+      Max Length          7
+      Mean Length         3.62530649574
+      Top Values
+          def                           x 59038 occurances
+          indef                         x 25712 occurances
+          null                          x 20714 occurances
+          pro                           x 10182 occurances
+          dctc                          x 3589 occurances
+          poss                          x 2751 occurances
+          el                            x 2037 occurances
+          dem                           x 1453 occurances
+          numpro                        x 564 occurances
+          num                           x 435 occurances
+
+      ------------------------------------------------------
+      Name                b
+      Field Number        1
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.00425743276804
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126297 occurances
+          1.0                           x 540 occurances
+
+      ------------------------------------------------------
+      Name                c
+      Field Number        2
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acomp
+      Max                 xcomp
+      Unique Values       112
+      Known Values        111
+      Case                lower
+      Min Length          2
+      Max Length          20
+      Mean Length         5.87322228986
+      Top Values
+          dobj                          x 36616 occurances
+          prep_of                       x 14731 occurances
+          nsubj                         x 12404 occurances
+          root                          x 8131 occurances
+          pobj                          x 6863 occurances
+          prep_to                       x 4590 occurances
+          nn                            x 3789 occurances
+          dep                           x 3766 occurances
+          prep_above                    x 3447 occurances
+          prep_below                    x 3044 occurances
+
+      ------------------------------------------------------
+      Name                d  // THIS IS THE ROLE COLUMN!
+      Field Number        3
+      Wrong Field Cnt     0
+      Type                string
+      Min                 f
+      Max                 g
+      Unique Values       2
+      Known Values        2
+      Case                lower
+      Min Length          1
+      Max Length          1
+      Mean Length         1.0
+      Top Values
+          g                             x 82782 occurances
+          f                             x 44055 occurances
+
+      ------------------------------------------------------
+      Name                e // SPEECH ACTION: query, reply, etc.
+      Field Number        4
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acknowledge
+      Max                 uncodable
+      Unique Values       13
+      Known Values        13
+      Case                lower
+      Min Length          5
+      Max Length          11
+      Mean Length         7.15460788256
+      Top Values
+          query_yn                      x 32863 occurances
+          instruct                      x 25089 occurances
+          explain                       x 23569 occurances
+          check                         x 13523 occurances
+          align                         x 8958 occurances
+          reply_w                       x 8301 occurances
+          clarify                       x 7708 occurances
+          query_w                       x 2774 occurances
+          reply_y                       x 1946 occurances
+          acknowledge                   x 1627 occurances
+
+      ------------------------------------------------------
+      Name                f
+      Field Number        5
+      Wrong Field Cnt     0
+      Type                string
+      Min                 dctc
+      Max                 relpro
+      Unique Values       13
+      Known Values        13
+      Case                lower
+      Min Length          2
+      Max Length          7
+      Mean Length         3.48664821779
+      Top Values
+          def                           x 66398 occurances
+          indef                         x 19072 occurances
+          null                          x 16280 occurances
+          pro                           x 12939 occurances
+          dctc                          x 4769 occurances
+          el                            x 3057 occurances
+          poss                          x 1988 occurances
+          dem                           x 794 occurances
+          numpro                        x 649 occurances
+          num                           x 366 occurances
+
+      ------------------------------------------------------
+      Name                g
+      Field Number        6
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.00275944716447
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126487 occurances
+          1.0                           x 350 occurances
+
+      ------------------------------------------------------
+      Name                h
+      Field Number        7
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acomp
+      Max                 xcomp
+      Unique Values       112
+      Known Values        111
+      Case                lower
+      Min Length          2
+      Max Length          20
+      Mean Length         5.93135867288
+      Top Values
+          dobj                          x 26883 occurances
+          prep_of                       x 15234 occurances
+          prep_at                       x 11979 occurances
+          nsubj                         x 11184 occurances
+          root                          x 9630 occurances
+          nn                            x 7640 occurances
+          prep_above                    x 7243 occurances
+          pobj                          x 5719 occurances
+          dep                           x 3521 occurances
+          prep_from                     x 2754 occurances
+
+      ------------------------------------------------------
+      Name                i
+      Field Number        8
+      Wrong Field Cnt     0
+      Type                string
+      Min                 f
+      Max                 g
+      Unique Values       2
+      Known Values        2
+      Case                lower
+      Min Length          1
+      Max Length          1
+      Mean Length         1.0
+      Top Values
+          g                             x 96218 occurances
+          f                             x 30619 occurances
+
+      ------------------------------------------------------
+      Name                j
+      Field Number        9
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acknowledge
+      Max                 uncodable
+      Unique Values       13
+      Known Values        13
+      Case                lower
+      Min Length          5
+      Max Length          11
+      Mean Length         7.25267863478
+      Top Values
+          instruct                      x 38108 occurances
+          query_yn                      x 25229 occurances
+          explain                       x 21547 occurances
+          align                         x 11818 occurances
+          check                         x 9452 occurances
+          clarify                       x 6644 occurances
+          reply_w                       x 5833 occurances
+          acknowledge                   x 2798 occurances
+          query_w                       x 2552 occurances
+          reply_y                       x 2046 occurances
+
+      ------------------------------------------------------
+      Name                k
+      Field Number        10
+      Wrong Field Cnt     0
+      Type                string
+      Min                 dctc_dctc
+      Max                 relpro_relpro
+      Unique Values       142
+      Known Values        142
+      Case                lower
+      Min Length          5
+      Max Length          15
+      Mean Length         8.11195471353
+      Top Values
+          def_def                       x 32273 occurances
+          indef_def                     x 12540 occurances
+          null_def                      x 9901 occurances
+          def_indef                     x 8452 occurances
+          def_null                      x 7799 occurances
+          pro_def                       x 5791 occurances
+          def_pro                       x 5459 occurances
+          indef_indef                   x 3724 occurances
+          null_null                     x 3674 occurances
+          indef_pro                     x 3464 occurances
+
+      ------------------------------------------------------
+      Name                l
+      Field Number        11
+      Wrong Field Cnt     0
+      Type                string
+      Min                 0_0
+      Max                 1_1
+      Unique Values       4
+      Known Values        4
+      Case                mixed
+      Min Length          3
+      Max Length          3
+      Mean Length         3.0
+      Top Values
+          0_0                           x 125967 occurances
+          1_0                           x 520 occurances
+          0_1                           x 330 occurances
+          1_1                           x 20 occurances
+
+      ------------------------------------------------------
+      Name                m
+      Field Number        12
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acomp_prep_above
+      Max                 xcomp_xcomp
+      Unique Values       2838
+      Known Values        2838
+      Case                lower
+      Min Length          5
+      Max Length          32
+      Mean Length         12.7827920875
+      Top Values
+          dobj_dobj                     x 7063 occurances
+          dobj_prep_of                  x 5565 occurances
+          prep_of_dobj                  x 3606 occurances
+          dobj_nsubj                    x 2998 occurances
+          dobj_root                     x 2938 occurances
+          nsubj_dobj                    x 2392 occurances
+          dobj_pobj                     x 1982 occurances
+          root_dobj                     x 1765 occurances
+          prep_of_prep_at               x 1737 occurances
+          dobj_prep_at                  x 1646 occurances
+
+      ------------------------------------------------------
+      Name                n // ROLE!
+      Field Number        13
+      Wrong Field Cnt     0
+      Type                string
+      Min                 f_f
+      Max                 g_g
+      Unique Values       4
+      Known Values        4
+      Case                lower
+      Min Length          3
+      Max Length          3
+      Mean Length         3.0
+      Top Values
+          g_g                           x 63526 occurances
+          f_g                           x 32692 occurances
+          g_f                           x 19256 occurances
+          f_f                           x 11363 occurances
+
+      ------------------------------------------------------
+      Name                o
+      Field Number        14
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acknowledge_acknowledge
+      Max                 uncodable_query_yn
+      Unique Values       137
+      Known Values        137
+      Case                lower
+      Min Length          11
+      Max Length          23
+      Mean Length         15.4072865173
+      Top Values
+          instruct_instruct             x 8783 occurances
+          query_yn_instruct             x 8704 occurances
+          explain_instruct              x 6667 occurances
+          query_yn_query_yn             x 5648 occurances
+          instruct_query_yn             x 5525 occurances
+          query_yn_explain              x 5458 occurances
+          explain_explain               x 4836 occurances
+          check_instruct                x 4502 occurances
+          explain_query_yn              x 4129 occurances
+          instruct_explain              x 4086 occurances
+
+      ------------------------------------------------------
+      Name                p
+      Field Number        15
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.258615388254
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 94035 occurances
+          1.0                           x 32802 occurances
+
+      ------------------------------------------------------
+      Name                q
+      Field Number        16
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.321034083115
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 86118 occurances
+          1.0                           x 40719 occurances
+
+      ------------------------------------------------------
+      Name                r
+      Field Number        17
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       1
+      Known Values        1
+      Mean                1.0
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 126837 occurances
+
+      ------------------------------------------------------
+      Name                s
+      Field Number        18
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.993298485458
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 125987 occurances
+          0.0                           x 850 occurances
+
+      ------------------------------------------------------
+      Name                t
+      Field Number        19
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       1
+      Known Values        1
+      Mean                1.0
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 126837 occurances
+
+      ------------------------------------------------------
+      Name                u
+      Field Number        20
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       1
+      Known Values        1
+      Mean                1.0
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 126837 occurances
+
+      ------------------------------------------------------
+      Name                v
+      Field Number        21
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.100365035439
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 114107 occurances
+          1.0                           x 12730 occurances
+
+      ------------------------------------------------------
+      Name                w
+      Field Number        22
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.993298485458
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 125987 occurances
+          0.0                           x 850 occurances
+
+      ------------------------------------------------------
+      Name                x
+      Field Number        23
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       1
+      Known Values        1
+      Mean                1.0
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 126837 occurances
+
+      ------------------------------------------------------
+      Name                y
+      Field Number        24
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.590434967714
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 74889 occurances
+          0.0                           x 51948 occurances
+
+      ------------------------------------------------------
+      Name                z
+      Field Number        25
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.182407341706
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 103701 occurances
+          1.0                           x 23136 occurances
+
+      ------------------------------------------------------
+      Name                aa
+      Field Number        26
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.353083090896
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 85777 occurances
+          1.0                           x 37336 occurances
+          2.0                           x 3724 occurances
+
+      ------------------------------------------------------
+      Name                bb
+      Field Number        27
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.988954327207
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 60890 occurances
+          0.0                           x 33674 occurances
+          2.0                           x 32273 occurances
+
+      ------------------------------------------------------
+      Name                cc
+      Field Number        28
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.182289079685
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 104459 occurances
+          1.0                           x 21635 occurances
+          2.0                           x 743 occurances
+
+      ------------------------------------------------------
+      Name                dd
+      Field Number        29
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.0177156507959
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 124602 occurances
+          1.0                           x 2223 occurances
+          2.0                           x 12 occurances
+
+      ------------------------------------------------------
+      Name                ee
+      Field Number        30
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.0658955982876
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 118574 occurances
+          1.0                           x 8168 occurances
+          2.0                           x 95 occurances
+
+      ------------------------------------------------------
+      Name                ff
+      Field Number        31
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.00135607117797
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126666 occurances
+          1.0                           x 170 occurances
+          2.0                           x 1 occurances
+
+      ------------------------------------------------------
+      Name                gg
+      Field Number        32
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.00956345545858
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 125648 occurances
+          1.0                           x 1165 occurances
+          2.0                           x 24 occurances
+
+      ------------------------------------------------------
+      Name                hh
+      Field Number        33
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.0401617824452
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 121817 occurances
+          1.0                           x 4946 occurances
+          2.0                           x 74 occurances
+
+      ------------------------------------------------------
+      Name                ii
+      Field Number        34
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.00405244526439
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126324 occurances
+          1.0                           x 512 occurances
+          2.0                           x 1 occurances
+
+      ------------------------------------------------------
+      Name                jj
+      Field Number        35
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.00158471108588
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126641 occurances
+          1.0                           x 191 occurances
+          2.0                           x 5 occurances
+
+      ------------------------------------------------------
+      Name                kk
+      Field Number        36
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.29166568115
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 93517 occurances
+          1.0                           x 29646 occurances
+          2.0                           x 3674 occurances
+
+      ------------------------------------------------------
+      Name                ll
+      Field Number        37
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.0373629146069
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 122171 occurances
+          1.0                           x 4593 occurances
+          2.0                           x 73 occurances
+
+      ------------------------------------------------------
+      Name                mm
+      Field Number        38
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.00631519193926
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126056 occurances
+          1.0                           x 761 occurances
+          2.0                           x 20 occurances
+
+      ------------------------------------------------------
+      Name                nn
+      Field Number        39
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       3
+      Known Values        3
+      Mean                0.185970970616
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 104402 occurances
+          1.0                           x 21282 occurances
+          2.0                           x 1153 occurances
+
+      ------------------------------------------------------
+      Name                oo
+      Field Number        40
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.00590521693197
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126088 occurances
+          1.0                           x 749 occurances
+
+      ------------------------------------------------------
+      Name                pp
+      Field Number        41
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.00100916924872
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126709 occurances
+          1.0                           x 128 occurances
+
+      ------------------------------------------------------
+      Name                qq
+      Field Number        42
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.330274289048
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 84946 occurances
+          1.0                           x 41891 occurances
+
+      ------------------------------------------------------
+      Name                rr
+      Field Number        43
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.813169658696
+      Median              1.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 103140 occurances
+          0.0                           x 23697 occurances
+
+      ------------------------------------------------------
+      Name                ss
+      Field Number        44
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acomp
+      Max                 xcomp
+      Unique Values       101
+      Known Values        100
+      Case                lower
+      Min Length          2
+      Max Length          16
+      Mean Length         5.15905364683
+      Top Values
+          root                          x 33388 occurances
+          ccomp                         x 23205 occurances
+          na                            x 17660 occurances
+          dep                           x 7151 occurances
+          xcomp                         x 3971 occurances
+          conj_and                      x 3968 occurances
+          dobj                          x 3879 occurances
+          rcmod                         x 3398 occurances
+          prep_to                       x 3364 occurances
+          pobj                          x 2949 occurances
+
+      ------------------------------------------------------
+      Name                tt
+      Field Number        45
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acomp
+      Max                 xcomp
+      Unique Values       100
+      Known Values        99
+      Case                lower
+      Min Length          2
+      Max Length          16
+      Mean Length         4.89933777261
+      Top Values
+          root                          x 47829 occurances
+          na                            x 17660 occurances
+          ccomp                         x 13659 occurances
+          dobj                          x 6681 occurances
+          dep                           x 6261 occurances
+          prep_to                       x 4029 occurances
+          xcomp                         x 2867 occurances
+          pobj                          x 2859 occurances
+          nsubj                         x 2324 occurances
+          rcmod                         x 2281 occurances
+
+      ------------------------------------------------------
+      Name                uu
+      Field Number        46
+      Wrong Field Cnt     0
+      Type                string
+      Min                 acomp_acomp
+      Max                 xcomp_xcomp
+      Unique Values       1952
+      Known Values        1951
+      Case                lower
+      Min Length          6
+      Max Length          33
+      Mean Length         11.0583914194
+      Top Values
+          na                            x 17660 occurances
+          root_root                     x 15040 occurances
+          ccomp_root                    x 7972 occurances
+          root_ccomp                    x 4046 occurances
+          dep_root                      x 3627 occurances
+          ccomp_ccomp                   x 3031 occurances
+          root_dobj                     x 2033 occurances
+          xcomp_root                    x 1956 occurances
+          root_dep                      x 1860 occurances
+          dobj_root                     x 1762 occurances
+
+      ------------------------------------------------------
+      Name                vv // WORD TOKENS??
+      Field Number        47
+      Wrong Field Cnt     0
+      Type                float
+      Min                 -3.0
+      Max                 694.0
+      Unique Values       1569
+      Known Values        1569
+      Mean                119.139917374
+      Median              78.0
+      Variance            11612.2337431
+      Std Dev             107.760074903
+      Top Values
+          2.0                           x 3007 occurances
+          0.0                           x 2708 occurances
+          1.0                           x 2398 occurances
+          3.0                           x 2210 occurances
+          4.0                           x 1735 occurances
+          5.0                           x 1474 occurances
+          6.0                           x 1343 occurances
+          7.0                           x 1285 occurances
+          8.0                           x 1099 occurances
+          9.0                           x 1058 occurances
+
+      ------------------------------------------------------
+      Name                ww
+      Field Number        48
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       411
+      Known Values        411
+      Mean                77.993330022
+      Median              52.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          1.0                           x 4188 occurances
+          2.0                           x 3903 occurances
+          0.0                           x 3590 occurances
+          4.0                           x 2321 occurances
+          3.0                           x 2161 occurances
+          6.0                           x 1799 occurances
+          5.0                           x 1595 occurances
+          8.0                           x 1540 occurances
+          12.0                          x 1415 occurances
+          10.0                          x 1411 occurances
+
+      ------------------------------------------------------
+      Name                xx
+      Field Number        49
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.0283040437727
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 123247 occurances
+          1.0                           x 3590 occurances
+
+      ------------------------------------------------------
+      Name                yy
+      Field Number        50
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.0219967359682
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 124047 occurances
+          1.0                           x 2790 occurances
+
+      ------------------------------------------------------
+      Name                zz
+      Field Number        51
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 None
+      Max                 None
+      Unique Values       2
+      Known Values        2
+      Mean                0.000662267319473
+      Median              0.0
+      Variance            None
+      Std Dev             None
+      Top Values
+          0.0                           x 126753 occurances
+          1.0                           x 84 occurances
+
+      ------------------------------------------------------
+      Name                aaa
+      Field Number        52
+      Wrong Field Cnt     0
+      Type                integer
+      Min                 -1
+      Max                 1
+      Unique Values       2
+      Known Values        2
+      Mean                -0.121849302648
+      Median              -1.0
+      Variance            0.985152747444
+      Std Dev             0.992548612131
+      Top Values
+          -1                            x 71146 occurances
+          1                             x 55691 occurances
