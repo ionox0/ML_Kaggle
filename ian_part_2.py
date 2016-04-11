@@ -212,22 +212,38 @@ write_results(eclf.predict(test_result))
 
 
 
-# In[46]:
+# In[47]:
 
 # New method for ensemble classification
 # VotingClassifier doesn't let us use different classifiers on different columns, they all have to work on all cols...
 
-class MetaClassifier:
+class TheMapTaskClassifier:
     def __init__(self):
+        self.numeric_cols = ['b', 'g', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
+           'z', 'aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg', 'hh', 'ii',
+           'jj', 'kk', 'll', 'mm', 'nn', 'oo', 'pp', 'qq', 'rr', 'vv',
+           'ww', 'xx', 'yy', 'zz']
+        
+        self.categorical_cols = ['a', 'c', 'e', 'd', 'f',
+            'uu', 'i', 'k', 'j', 'm', 'l', 'o', 'n', 'ss', 'h', 'tt']
+        
+        self.actual_numeric_cols = ['vv', 'ww']
+        
+        self.boolean_cols = [
+            'g', 'p', 'q', 's',
+            'v', 'w', 'y', 'z',
+            'oo', 'pp', 'qq', 'rr',
+            'xx', 'yy', 'zz']
+        
         self.clf1 = LogisticRegression(random_state=1)
         self.clf2 = RandomForestClassifier(random_state=1, max_depth=5)
         self.clf3 = GaussianNB()
+        
 
     def fit(self, train_data, train_labels):
         enc_train = encode_as_labels(train_data[categorical_cols])
-        print(enc_train.shape)
-        self.clf1_trained = self.clf1.fit(train_data[numeric_cols], train_labels)
-        self.clf2_trained = self.clf2.fit(train_data[numeric_cols], train_labels)
+        self.clf1_trained = self.clf1.fit(train_data[self.numeric_cols], train_labels)
+        self.clf2_trained = self.clf2.fit(train_data[self.numeric_cols], train_labels)
         self.clf3_trained = self.clf3.fit(enc_train, train_labels)
         return self
         
@@ -255,12 +271,11 @@ class MetaClassifier:
 def cross_val(clf, train_data, train_labels):
     x_train, x_test, y_train, y_test = train_test_split(train_data, train_labels, test_size=0.4)
     clf_trained = clf.fit(x_train, y_train)
-    print(clf_trained.fit)
     scores = cross_val_score(clf_trained, x_train, y_train, cv=4, scoring="accuracy")
     return scores
 
 
-a = MetaClassifier()
+a = TheMapTaskClassifier()
 preds = cross_val(a, train.ix[:,:-1], train['aaa'])
 print(preds)
 write_results(preds)
