@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[63]:
+# In[ ]:
 
 import csv
 import math
@@ -11,8 +11,10 @@ import string
 
 # Classification utils
 from sklearn.cross_validation import train_test_split
+from sklearn.cross_validation import cross_val_score
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import LabelEncoder
+from sklearn.cross_validation import KFold
 
 # Classifiers
 from sklearn.neighbors import KNeighborsClassifier
@@ -21,16 +23,17 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
+from sklearn.ensemble import VotingClassifier
 
 
-# In[2]:
+# In[ ]:
 
 # Load
 train = pandas.read_csv('data.csv')
 test = pandas.read_csv('quiz.csv')
 
 
-# In[3]:
+# In[ ]:
 
 # Name Columns (53 total)
 alphabet = list(string.ascii_lowercase)
@@ -76,85 +79,7 @@ for i, letter in enumerate(alphabet2):
 # [1, 6, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
 # 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 47, 48, 49, 50, 51, 52]
 
-
-# In[34]:
-
-sel = VarianceThreshold(threshold=(.8))
-reduced_features_train = sel.fit_transform(train[numeric_cols[:-1]])
-print(reduced_features_train)
-
-
-# In[44]:
-
-# Features shown to have coorelation with label
-coorelated_features = ['q', 'aa', 'bb', 'vv', 'ww']
-# Features selected by Recursive Feature Extraction
-rfe_selected_numeric_cols = ['x', 'p', 'dd', 'kk']
-
-
-# In[4]:
-
-def cross_val(clf, train_data, train_labels):
-    error_rates = []
-    for i in range(3):
-        # todo - kfold cross val
-        x_train, x_test, y_train, y_test = train_test_split(train_data, train_labels, test_size=0.4)
-        clf_trained = clf().fit(x_train, y_train)
-        e = clf_trained.score(x_test, y_test)
-        error_rates.append(e)
-    
-    return np.mean(error_rates)
-
-
-# In[54]:
-
-# Training error using numeric c
-labels = np.array(train['aaa']).astype(int)
-# Keep label out of features
-e = cross_val(DecisionTreeClassifier, train[coorelated_features], labels)
-print(e)
-
-
-# In[74]:
-
-# Training error using categorical columns
-
-def encode_as_labels(X):
-    output = X.copy()
-    if X.columns is not None:
-        for col in X.columns:
-            output[col] = LabelEncoder().fit_transform(output[col])
-    else:
-        for colname,col in output.iteritems():
-            output[colname] = LabelEncoder().fit_transform(col)
-    return output
-
-
-enc_train = encode_as_labels(train[categorical_cols])
-print(enc_train.shape)
-
-
-labels = np.array(train['aaa']).astype(int)
-e = cross_val(RandomForestClassifier, enc_train, labels)
-print(e)
-
-
-# In[53]:
-
-# Make predictions using numeric columns
-trained = KNeighborsClassifier().fit(train[numeric_cols[:-1]], train['aaa'])
-preds = trained.predict(np.array(test[numeric_cols[:-1]]))
-write_results(preds)
-
-
-# In[13]:
-
-def write_results(preds):
-    with open('test_predictions.csv', 'wb') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(['id', 'Prediction'])
-        for i, pred in enumerate(preds):
-            writer.writerow([i+1, pred])
+train_labels = np.array(train['aaa']).astype(int)
 
 
 # In[ ]:
