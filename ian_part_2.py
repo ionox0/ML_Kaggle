@@ -14,6 +14,7 @@ from sklearn.cross_validation import train_test_split
 from sklearn.cross_validation import cross_val_score
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import PolynomialFeatures
 from sklearn.cross_validation import KFold
 
 # Classifiers
@@ -33,7 +34,7 @@ train = pandas.read_csv('data.csv')
 test = pandas.read_csv('quiz.csv')
 
 
-# In[14]:
+# In[4]:
 
 # Name Columns (53 total)
 alphabet = list(string.ascii_lowercase)
@@ -71,6 +72,8 @@ numeric_cols = ['b', 'g', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
        'jj', 'kk', 'll', 'mm', 'nn', 'oo', 'pp', 'qq', 'rr', 'vv',
        'ww', 'xx', 'yy', 'zz']
 
+actual_numeric_cols = ['vv', 'ww']
+
 numeric_indices = []
 for i, letter in enumerate(alphabet2):
     if letter in numeric_cols:
@@ -82,13 +85,13 @@ for i, letter in enumerate(alphabet2):
 train_labels = np.array(train['aaa']).astype(int)
 
 
-# In[6]:
+# In[ ]:
 
 sel = VarianceThreshold(threshold=(.8))
 reduced_features_train = sel.fit_transform(train[numeric_cols[:-1]])
 
 
-# In[7]:
+# In[ ]:
 
 # Features shown to have coorelation with label
 coorelated_features = ['q', 'aa', 'bb', 'vv', 'ww']
@@ -96,7 +99,7 @@ coorelated_features = ['q', 'aa', 'bb', 'vv', 'ww']
 rfe_selected_numeric_cols = ['x', 'p', 'dd', 'kk']
 
 
-# In[8]:
+# In[5]:
 
 def cross_val(clf, train_data, train_labels):
     x_train, x_test, y_train, y_test = train_test_split(train_data, train_labels, test_size=0.4)
@@ -105,7 +108,7 @@ def cross_val(clf, train_data, train_labels):
     return scores
 
 
-# In[9]:
+# In[ ]:
 
 # Training error using numeric columns
 
@@ -115,7 +118,7 @@ e = cross_val(clf, train[coorelated_features], train_labels)
 print(e)   # [ 0.76499961  0.76318625]   regular KNN on features that are coorelated with the label --> ~76%
 
 
-# In[10]:
+# In[8]:
 
 # Training error using categorical columns
 
@@ -131,6 +134,9 @@ def encode_as_labels(X):
             output[colname] = LabelEncoder().fit_transform(col)
     return output
 
+
+# In[ ]:
+
 enc_train = encode_as_labels(train[categorical_cols])
 r = RandomForestClassifier(n_estimators=100, max_depth=5)
 
@@ -138,7 +144,7 @@ e = cross_val(r, enc_train, train_labels)
 print(e)    # [ 0.82063546  0.81616777]     RandomForest with max_depth=5, one-hot encoded categorical vars --> ~82%
 
 
-# In[17]:
+# In[ ]:
 
 # Make test predictions using numeric columns
 trained = KNeighborsClassifier().fit(train[numeric_cols[:-1]], train['aaa'])
@@ -146,14 +152,18 @@ preds = trained.predict(np.array(test[numeric_cols[:-1]]))
 write_results(preds)
 
 
-# In[19]:
+# In[ ]:
 
 # Make test predictions using voting with multiple classifiers
 enc_train = encode_as_labels(train[categorical_cols])
+
 # Make sure not to include the training labels as part of the data that the classifiers are trainined on!
-# (otherwise will get 100% accuracy)
+# (otherwise will get 100% training prediction accuracy)
 frames = [train[numeric_cols[:-1]], enc_train]
 result = pandas.concat(frames, axis=1)
+
+poly = PolynomialFeatures(2)
+result = poly.fit_transform(result)
 
 print(train[numeric_cols].shape, train[categorical_cols].shape)
 print(result.shape)
@@ -167,7 +177,7 @@ scores = cross_val_score(eclf, result, train_labels, cv=10, scoring='accuracy')
 scores  # VotingClassifier with LR, RF, and GNB -->   ~80% accuracy
 
 
-# In[16]:
+# In[6]:
 
 def write_results(preds):
     with open('test_predictions.csv', 'wb') as csvfile:
@@ -177,7 +187,7 @@ def write_results(preds):
             writer.writerow([i+1, pred])
 
 
-# In[17]:
+# In[ ]:
 
 clf1 = LogisticRegression(random_state=1)
 clf2 = RandomForestClassifier(random_state=1, max_depth=5)
@@ -195,6 +205,80 @@ test_result = pandas.concat(frames, axis=1)
 
 eclf.fit(train_result, train['aaa'])
 write_results(eclf.predict(test_result))
+
+
+# In[ ]:
+
+
+
+
+# In[46]:
+
+# New method for ensemble classification
+# VotingClassifier doesn't let us use different classifiers on different columns, they all have to work on all cols...
+
+class MetaClassifier:
+    def __init__(self):
+        self.clf1 = LogisticRegression(random_state=1)
+        self.clf2 = RandomForestClassifier(random_state=1, max_depth=5)
+        self.clf3 = GaussianNB()
+
+    def fit(self, train_data, train_labels):
+        enc_train = encode_as_labels(train_data[categorical_cols])
+        print(enc_train.shape)
+        self.clf1_trained = self.clf1.fit(train_data[numeric_cols], train_labels)
+        self.clf2_trained = self.clf2.fit(train_data[numeric_cols], train_labels)
+        self.clf3_trained = self.clf3.fit(enc_train, train_labels)
+        return self
+        
+    def predict(self, data):
+        enc_test = encode_as_labels(data[categorical_cols])
+        
+        preds1 = clf1.predict(data[numeric_cols])
+        preds2 = clf2.predict(data[numeric_cols])
+        preds3 = clf3.predict(enc_test)
+
+        preds = np.sum(np.vstack([preds1,preds2,preds3]), axis=0)
+        print('before rounding: ', preds)
+        preds[preds > 0] = 1
+        preds[preds < 0] = -1
+        
+        return preds
+    
+    def get_params(self, deep=False):
+        '''
+        Hack to make scikit happy when using this class in scikitlearn.cross_val_score
+        '''
+        return {}
+    
+
+def cross_val(clf, train_data, train_labels):
+    x_train, x_test, y_train, y_test = train_test_split(train_data, train_labels, test_size=0.4)
+    clf_trained = clf.fit(x_train, y_train)
+    print(clf_trained.fit)
+    scores = cross_val_score(clf_trained, x_train, y_train, cv=4, scoring="accuracy")
+    return scores
+
+
+a = MetaClassifier()
+preds = cross_val(a, train.ix[:,:-1], train['aaa'])
+print(preds)
+write_results(preds)
+
+
+# In[ ]:
+
+x1 = np.arange(9.0).reshape((3, 3))
+x2 = np.arange(3.0)
+
+print(x1)
+print(x2)
+np.add(x1, x2)
+
+
+# In[14]:
+
+write_results(preds)
 
 
 # In[ ]:
