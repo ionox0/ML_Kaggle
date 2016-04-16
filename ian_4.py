@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[4]:
 
 import csv
 import math
@@ -12,17 +12,18 @@ import string
 # Classification utils
 from sklearn.cross_validation import train_test_split
 from sklearn.cross_validation import cross_val_score
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
 from sklearn import grid_search
 
 # Classifiers
 from sklearn.ensemble import RandomForestClassifier
 
-
 task = pd.read_csv('data.csv')
 quiz = pd.read_csv('quiz.csv')
 
 
-# In[2]:
+# In[6]:
 
 # Name Columns (53 total)
 alphabet = list(string.ascii_lowercase)
@@ -75,7 +76,8 @@ train_labels = np.array(task['aaa']).astype(int)
 
 # In[ ]:
 
-# Exploring different parameter settings with 
+# One-hot encoded features for categorical vars
+
 X_dummies = pd.get_dummies(task[categorical_cols + zero_one_two_cols + boolean_cols])
 X_quiz_dummies = pd.get_dummies(quiz[categorical_cols + zero_one_two_cols + boolean_cols])
 
@@ -83,18 +85,26 @@ X_train_dummies = X_dummies[[col for col in X_dummies.columns if col in X_quiz_d
 X_quiz_dummies = X_quiz_dummies[[col for col in X_quiz_dummies.columns if col in X_train_dummies.columns]]
 
 
+# In[ ]:
+
+# Exploring different parameter settings with grid_search
+# Features reduced with select k best
+# Training size reduced with train_test_split
+
+X_train_k_best = SelectKBest(chi2, k=10).fit_transform(X_train_dummies, task.ix[:,-1])
+
 param_grid = [
-    {'max_depth': [1, 10, 100, 1000], 'max_features': [1, 25, 50, 100], 'n_estimators': [1, 10, 100, 1000]}
+    {'max_depth': [1, 10, 100, 1000], 'max_features': [1, 5, 10], 'n_estimators': [1, 10, 100, 1000]}
 ]
 
 
-rf = RandomForestClassifier()
+rf = RandomForestClassifier(n_jobs=-1)
 clf = grid_search.GridSearchCV(rf, param_grid)
 
-x_train, x_test, y_train, y_test = train_test_split(X_train_dummies, task.ix[:,-1], test_size=0.95)
+x_train, x_test, y_train, y_test = train_test_split(X_train_k_best, task.ix[:,-1], train_size=0.1, test_size=0.3)
 clf_trained = clf.fit(x_train, y_train)
 
-scores = cross_val_score(clf_trained, x_test, y_test, cv=5)
+scores = cross_val_score(clf_trained, x_test, y_test, cv=2)
 
 print(scores)
 print('best params: ', clf_trained.best_params_)
