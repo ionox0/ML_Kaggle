@@ -158,6 +158,8 @@ pca = PCA(n_components=2)
 Y_sklearn = pca.fit_transform(train_std)
 print(Y_sklearn)
 
+DecisionTreeClassifier().fit()
+
 with plt.style.context('seaborn-whitegrid'):
     plt.figure(figsize=(6, 4))
     for lab, col in zip(('Iris-setosa', 'Iris-versicolor', 'Iris-virginica'), ('blue', 'red', 'green')):

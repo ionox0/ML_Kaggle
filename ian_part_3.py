@@ -1,12 +1,12 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[42]:
 
 import csv
 import math
 import numpy as np
-import pandas
+import pandas as pd
 import string
 
 # Classification utils
@@ -15,6 +15,7 @@ from sklearn.cross_validation import cross_val_score
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import LabelEncoder
 from sklearn.cross_validation import KFold
+from sklearn.metrics import confusion_matrix
 
 # Classifiers
 from sklearn.neighbors import KNeighborsClassifier
@@ -22,26 +23,29 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB, MultinomialNB
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
 from sklearn.ensemble import VotingClassifier
 
-
-# In[3]:
-
-# Load
-train = pandas.read_csv('data.csv')
-test = pandas.read_csv('quiz.csv')
+# Set ipython's max row / column display
+pd.set_option('display.max_row', 20)
+pd.set_option('display.max_columns', 50)
 
 
-# In[10]:
+task = pandas.read_csv('data.csv')
+quiz = pandas.read_csv('quiz.csv')
+
+
+# In[43]:
 
 # Name Columns (53 total)
 alphabet = list(string.ascii_lowercase)
 alphabet2 = alphabet + [l+l for l in alphabet] + ['aaa']
 
-train.columns = alphabet2
+task.columns = alphabet2
 # Leave out label column for test data
-test.columns = alphabet2[:-1]
+quiz.columns = alphabet2[:-1]
 
 # Designate Boolean Columns (15 total)
 boolean_cols = [
@@ -51,19 +55,21 @@ boolean_cols = [
     'xx', 'yy', 'zz'
 ]
 
+zero_one_two_cols = ['aa','bb','cc','dd','ee','ff','gg','hh','ii','jj','kk','ll','mm','nn']
+
 # Designate Categorical Columns (16 total)
-cols = train.columns
-num_cols = train._get_numeric_data().columns
+cols = task.columns
+num_cols = task._get_numeric_data().columns
 list(set(cols) - set(num_cols))
 
-categorical_cols = ['a', 'c', 'e', 'd', 'f',
- 'uu', 'i', 'k', 'j', 'm',
- 'l', 'o', 'n', 'ss', 'h',
- 'tt']
+categorical_cols = ['a', 'c', 'd', 'e', 'f', 'h', 'i', 'j', 'k',
+ 'l', 'm', 'n', 'o', 
+   'ss', 'tt', 'uu'
+ ]
 
 for col in categorical_cols:
-    train[col] = train[col].astype('category')
-    test[col] = test[col].astype('category')
+    task[col] = task[col].astype('category')
+    quiz[col] = quiz[col].astype('category')
 
 # Designate Numeric Columns (37 total)
 numeric_cols = ['b', 'g', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
@@ -79,10 +85,10 @@ for i, letter in enumerate(alphabet2):
 # [1, 6, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
 # 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 47, 48, 49, 50, 51, 52]
 
-train_labels = np.array(train['aaa']).astype(int)
+train_labels = np.array(task['aaa']).astype(int)
 
 
-# In[11]:
+# In[ ]:
 
 ##########################################
 #          TheMapTaskClassifier          #
@@ -109,8 +115,8 @@ class MetaClassifier:
             'oo', 'pp', 'qq', 'rr',
             'xx', 'yy', 'zz']
         
-        self.clf1 = LogisticRegression(random_state=1)
-        self.clf2 = RandomForestClassifier(random_state=1, max_depth=5)
+        self.clf1 = KNeighborsClassifier()
+        self.clf2 = RandomForestClassifier()
         self.clf3 = GaussianNB()
         
 
@@ -122,14 +128,13 @@ class MetaClassifier:
         return self
         
     def predict(self, data):
-        enc_test = encode_as_labels(data[categorical_cols])
+        enc_test = pandas.get_dummies(data[categorical_cols])
         
         preds1 = self.clf1.predict(data[numeric_cols])
         preds2 = self.clf2.predict(data[numeric_cols])
         preds3 = self.clf3.predict(enc_test)
 
         preds = np.sum(np.vstack([preds1,preds2,preds3]), axis=0)
-        print('before rounding: ', preds)
         preds[preds > 0] = 1
         preds[preds < 0] = -1
         
@@ -151,11 +156,10 @@ def cross_val(clf, train_data, train_labels):
 
 a = MetaClassifier()
 preds = cross_val(a, train.ix[:,:-1], train['aaa'])
-print(preds)
 write_results(preds)
 
 
-# In[6]:
+# In[ ]:
 
 # Method to convert to one-hot encodings for categorical variables
 # pd.get_dummies --> returns matrix of every feature, concatenated from all cols, into one feature space
@@ -170,7 +174,7 @@ def encode_as_labels(X):
     return output
 
 
-# In[7]:
+# In[30]:
 
 def write_results(preds):
     with open('test_predictions.csv', 'wb') as csvfile:
@@ -182,5 +186,137 @@ def write_results(preds):
 
 # In[ ]:
 
+df = pandas.get_dummies(train[categorical_cols])
+c = RandomForestClassifier(max_depth=200, max_features=1, n_estimators=500)
+# bool_num = np.concatenate([boolean_cols, numeric_cols])
+x_train, x_test, y_train, y_test = train_test_split(df, train.ix[:,-1], test_size=0.4)
+clf_trained = c.fit(x_train, y_train)
+cross_val_score(clf_trained, x_test, y_test, cv=5) # array([ 0.91741564,  0.91528364]) - v. good
 
+
+# In[ ]:
+
+c = RandomForestClassifier(max_depth=200, max_features=1, n_estimators=500)
+
+train_df = pandas.get_dummies(train[categorical_cols])
+clf_trained = c.fit(train_df, train.ix[:,-1])
+
+# Figure out how to add empty columns for 1783 cols in train_df that aren't in test_df
+test_df = pandas.get_dummies(test[categorical_cols])
+preds = clf_trained.predict(test_df)
+
+
+# In[ ]:
+
+
+
+
+# In[44]:
+
+# Peter's method
+
+X_dummies = pd.get_dummies(task[categorical_cols + zero_one_two_cols + boolean_cols])
+X_quiz_dummies = pd.get_dummies(quiz[categorical_cols + zero_one_two_cols + boolean_cols])
+
+X_train_dummies = X_dummies[[col for col in X_dummies.columns if col in X_quiz_dummies.columns]]
+X_quiz_dummies = X_quiz_dummies[[col for col in X_quiz_dummies.columns if col in X_train_dummies.columns]]
+
+# Added class weights b/c we're overpredicting on the -1's
+clf = RandomForestClassifier(max_depth=200, max_features=1, n_estimators=500, class_weight={-1: 1, 1: 2}, n_jobs=-1)
+
+x_train, x_test, y_train, y_test = train_test_split(X_train_dummies, task.ix[:,-1], test_size=0.4)
+clf_trained = clf.fit(x_train, y_train)
+scores = cross_val_score(clf_trained, x_test, y_test, cv=5)
+print(scores)
+# [0.92550256 0.92313756 0.927959 0.92667061 0.92312241] (before class weighting)
+# [0.92047694 0.92056766 0.91682271 0.91652705 0.91257638] (after class weighting) (worse)
+return
+
+clf_full_trained = clf.fit(X_train_dummies, task.ix[:,-1])
+preds = clf_full_trained.predict(X_quiz_dummies)
+
+
+# In[45]:
+
+preds = clf_trained.predict(x_test)
+print(confusion_matrix(y_test, preds, labels=[-1, 1]))
+
+# Before class weighting
+#  [27476   986]
+#  [ 2401 19872]
+
+# After class weighting
+# [26350  2116]
+# [ 1730 20539]
+
+
+# In[31]:
+
+len(preds)
+write_results(preds)
+
+
+# In[ ]:
+
+###########################
+### Tweaking and tuning ###
+###########################
+
+# Normalizing data (just numeric columns)
+train_std = StandardScaler().fit_transform(train[numeric_cols])
+test_std = StandardScaler().fit_transform(test[numeric_cols[:-1]])
+
+train_std = pandas.DataFrame(data=train_std[0:,0:])
+test_std = pandas.DataFrame(data=test_std[0:,0:])
+
+train_std.columns = numeric_cols
+# Leave out label column for test data
+test_std.columns = numeric_cols[:-1]
+
+
+# In[ ]:
+
+sel = VarianceThreshold(threshold=(.8))
+reduced_features_train = sel.fit_transform(train_std)
+
+rfe = RFE(estimator=LogisticRegression(), n_features_to_select=7, step=1)
+rfe.fit(train[numeric_cols], train['aaa'])
+
+
+# In[ ]:
+
+# Check out coorelation matrix of vars
+train.corr()
+
+# Notable correlations with 'aaa' label:
+# q 9%
+# aa 20%
+# bb 17%
+# vv 41%
+# ww 41%
+
+coorelated_features = ['q', 'aa', 'bb', 'vv', 'ww']
+
+
+# In[ ]:
+
+# Check out covariance matrix of vars
+cov = np.cov(train_std.T)
+cov_df = pandas.DataFrame(data=cov)
+# print(df)
+
+# Print in sorted order
+s = cov_df.unstack()
+so = s.order(kind="quicksort")
+print(so)
+
+# Notable findings:
+# cols 9, 5 -> 100% coorelation
+# cols 2 + 3, 29 -> 62%, 48%
+# cols 1 + 2, 9 -> -76%, -60% 
+# 27, 28 - 41%
+# 2 + 3, 28 + 29
+# 31, 32 - 99%
+# 33, 34, - 89%
+# 31 + 32, 36 - 41%
 
