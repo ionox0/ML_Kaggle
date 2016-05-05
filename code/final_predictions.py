@@ -1,6 +1,7 @@
 from __future__ import division
 import warnings
 import string
+import argparse
 
 import pandas as pd
 import numpy as np
@@ -11,6 +12,12 @@ import seaborn as sns
 
 from sklearn.cross_validation import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+
+parser = argparse.ArgumentParser()
+parser.add_argument("datafile")
+parser.add_argument("quizfile")
+parser.add_argument("outputfile")
+args = parser.parse_args()
 
 # Create useful column subests
 paired_cols = [
@@ -58,15 +65,19 @@ def score_features(clf, X, y, n_iterations=1):
     rankings = []
     for it in range(n_iterations):
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
-        rf_clf.fit(X, y)
+        clf.fit(X, y)
         rankings.append(clf.feature_importances_)
     return np.array(rankings)
 
 
 def main():
+    DATAFILE = args.datafile
+    QUIZFILE = args.quizfile
+    OUTPUTFILE = args.outputfile
+
     # Read in the data
-    task = pd.read_csv('./data/data.csv')
-    quiz = pd.read_csv('./data/quiz.csv')
+    task = pd.read_csv(DATAFILE)
+    quiz = pd.read_csv(QUIZFILE)
 
     # Rename columns to make the easier to work with
     alphabet = list(string.ascii_lowercase)
@@ -98,15 +109,14 @@ def main():
     X = X_train_dummies[gt_zero_cols]
     rf_clf = RandomForestClassifier(n_estimators=200, n_jobs=-1)
     rf_clf.fit(X, y)
-    preds = rf_clf.predict(X_quiz_dummies)
+    preds = rf_clf.predict(X_quiz_dummies[gt_zero_cols].as_matrix())
     pred = pd.DataFrame(preds).reset_index()
     pred.columns = ['Id', 'Prediction']
     pred.Id = pred.Id + 1
-    pred.to_csv('./data/preds.csv', index=False)
+    pred.to_csv(OUTPUTFILE, index=False)
+
 
 if __name__ == '__main__':
     main()
-
-
 
 
