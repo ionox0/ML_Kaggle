@@ -1,3 +1,8 @@
+"""
+Team Sandwich Final Predcition Code
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"""
+
 from __future__ import division
 import warnings
 import string
@@ -62,12 +67,23 @@ continuous_cols = [
 
 
 def score_features(clf, X, y, n_iterations=1):
-    rankings = []
+    """
+    Creates a matrix of feature importance scores.
+
+    Args:
+        X: n x d numpy matrix of data points
+        y: n x 1 vector of labels
+        n_iterations: int for number of iterationsto return
+
+    Returns:
+        importances: n_iterations x d matrix of feature importances
+    """
+    importances = []
     for it in range(n_iterations):
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
         clf.fit(X, y)
-        rankings.append(clf.feature_importances_)
-    return np.array(rankings)
+        importances.append(clf.feature_importances_)
+    return np.array(importances)
 
 
 def main():
@@ -86,29 +102,37 @@ def main():
     task.columns = alphabet2
     quiz.columns = alphabet2[:-1]
 
-    # One-hot encode the columns
+    # One-hot encode the categorical columns
     final_cols = categorical_cols + three_value_cols + boolean_cols + continuous_cols
     X_dummies = pd.get_dummies(task[final_cols])
     X_quiz_dummies = pd.get_dummies(quiz[final_cols])
     X_train_dummies = X_dummies[[col for col in X_dummies.columns if col in X_quiz_dummies.columns]]
     X_quiz_dummies = X_quiz_dummies[[col for col in X_quiz_dummies.columns if col in X_train_dummies.columns]]
+
+    # Draw a random of the data for use in feature importance scoring
     X_train_sample = X_train_dummies.sample(10000)
     target_cols = [col for col in X_dummies.columns if col in X_quiz_dummies.columns]
     sample_ixs = list(X_train_sample.index)
     y = task.aaa.as_matrix()
     y_sample = y[sample_ixs]
 
-    # Feature selection using the model
+    # Use a random forest classifier in the score_features
+    # function to create a list of features to use with
+    # the classifier.  In this case we used all of the
+    # features that had non-zero importance after 20 iterations.
     rf_clf = RandomForestClassifier(n_estimators=30, n_jobs=-1)
     feats = score_features(rf_clf, X_train_sample.as_matrix(), y_sample, n_iterations=20)
-    imp_sums = pd.Series(feats.sum(axis=0))
-    gt_zero_features = imp_sums[imp_sums > 0].index
+    importance_sums = pd.Series(feats.sum(axis=0))
+    gt_zero_features = importance_sums[importance_sums > 0].index
     gt_zero_cols = X_train_dummies.columns[gt_zero_features]
 
-    # Fit the classifier and predict
+    # Fit the classifier using the non-zero importance
+    # subset of columns
     X = X_train_dummies[gt_zero_cols]
     rf_clf = RandomForestClassifier(n_estimators=200, n_jobs=-1)
     rf_clf.fit(X, y)
+
+    # Create the predictions using the quiz dummies
     preds = rf_clf.predict(X_quiz_dummies[gt_zero_cols].as_matrix())
     pred = pd.DataFrame(preds).reset_index()
     pred.columns = ['Id', 'Prediction']
