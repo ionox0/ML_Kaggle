@@ -109,7 +109,9 @@ def main():
     X_train_dummies = X_dummies[[col for col in X_dummies.columns if col in X_quiz_dummies.columns]]
     X_quiz_dummies = X_quiz_dummies[[col for col in X_quiz_dummies.columns if col in X_train_dummies.columns]]
 
-    # Draw a random of the data for use in feature importance scoring
+    # Draw a random of the data for use in feature
+    # importance scoring and create the sample and
+    # final label vectors
     X_train_sample = X_train_dummies.sample(10000)
     target_cols = [col for col in X_dummies.columns if col in X_quiz_dummies.columns]
     sample_ixs = list(X_train_sample.index)
