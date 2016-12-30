@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[8]:
 
 import csv
 import math
@@ -35,13 +35,13 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
-
+`
 # Load
 train = pandas.read_csv('data.csv')
 test = pandas.read_csv('quiz.csv')
 
 
-# In[2]:
+# In[9]:
 
 # Name Columns (53 total)
 alphabet = list(string.ascii_lowercase)
@@ -88,7 +88,7 @@ for i, letter in enumerate(alphabet2):
 # 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 47, 48, 49, 50, 51, 52]
 
 
-# In[3]:
+# In[10]:
 
 ##########################
 ### Data Preprocessing ###
@@ -171,7 +171,7 @@ with plt.style.context('seaborn-whitegrid'):
     plt.show()
 
 
-# In[15]:
+# In[5]:
 
 #########################
 ### Feature Selection ###
@@ -223,12 +223,12 @@ train.corr()
 coorelated_features = ['q', 'aa', 'bb', 'vv', 'ww']
 
 
-# In[ ]:
+# In[14]:
 
 # Check out covariance matrix of vars
 cov = np.cov(train_std.T)
 cov_df = pandas.DataFrame(data=cov)
-# print(df)
+print(cov_df)
 
 # Print in sorted order
 s = cov_df.unstack()
@@ -251,7 +251,7 @@ print(so)
 # Give higher weights to more coorelated variables - todo
 
 
-# In[14]:
+# In[12]:
 
 ################################
 ### Train + Test Classifiers ###
@@ -299,12 +299,12 @@ def meta_classify(train, test, train_std, test_std):
         MultinomialNB,
     ]
 
-    err_rates = []
+    pred_rates = []
     for clf in numerical_clf:
         # Keep label out of features
-        labels = np.array(train_std['aaa']).astype(int)
-        e = cross_val(clf, train_std[numeric_cols[:-1]], labels)
-        err_rates.append(e)
+        labels = np.array(train['aaa']).astype(int)
+        e = cross_val(clf, train[numeric_cols[:-1]], labels)
+        pred_rates.append(e)
         print(clf, e)
               
 #     for clf in categorical_clf:
@@ -312,9 +312,9 @@ def meta_classify(train, test, train_std, test_std):
 #         err_rates.append(e)
 #         print(clf, e)
             
-    best_clf = numerical_clf[np.argmin(err_rates)]
+    best_clf = numerical_clf[np.argmax(pred_rates)]
     print('Best: ', best_clf)
-    trained = best_clf().fit(train_std[numeric_cols[:-1]], train_std['aaa'])
+    trained = best_clf().fit(train[numeric_cols[:-1]], train['aaa'])
     return trained.predict(np.array(test[numeric_cols[:-1]]))
     
     

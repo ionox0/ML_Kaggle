@@ -1,85 +1,100 @@
 
 # coding: utf-8
 
-# In[ ]:
+# In[24]:
 
 import csv
 import math
 import numpy as np
-import pandas
+import pandas as pd
 import string
-
 # Classification utils
 from sklearn.cross_validation import train_test_split
 from sklearn.cross_validation import cross_val_score
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.preprocessing import LabelEncoder
-from sklearn.cross_validation import KFold
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
 
-# Classifiers
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.naive_bayes import GaussianNB, MultinomialNB
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
-from sklearn.ensemble import VotingClassifier
+import matplotlib
+import matplotlib.pyplot as plt
 
+matplotlib.style.use('ggplot')
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
-# In[ ]:
-
-# Load
-train = pandas.read_csv('data.csv')
-test = pandas.read_csv('quiz.csv')
+task = pd.read_csv('data.csv')
+quiz = pd.read_csv('quiz.csv')
 
 
-# In[ ]:
+# In[26]:
 
 # Name Columns (53 total)
 alphabet = list(string.ascii_lowercase)
 alphabet2 = alphabet + [l+l for l in alphabet] + ['aaa']
 
-train.columns = alphabet2
-# Leave out label column for test data
-test.columns = alphabet2[:-1]
+task.columns = alphabet2
+quiz.columns = alphabet2[:-1]
 
-# Designate Boolean Columns (15 total)
-boolean_cols = [
-    'g', 'p', 'q', 's',
-    'v', 'w', 'y', 'z',
-    'oo', 'pp', 'qq', 'rr',
-    'xx', 'yy', 'zz'
-]
-
-# Designate Categorical Columns (16 total)
-cols = train.columns
-num_cols = train._get_numeric_data().columns
-list(set(cols) - set(num_cols))
-
-categorical_cols = ['a', 'c', 'e', 'd', 'f',
- 'uu', 'i', 'k', 'j', 'm',
- 'l', 'o', 'n', 'ss', 'h',
- 'tt']
-
-for col in categorical_cols:
-    train[col] = train[col].astype('category')
-    test[col] = test[col].astype('category')
-
-# Designate Numeric Columns (37 total)
+continuous_cols = ['vv', 'ww']
+boolean_cols = ['g', 'p', 'q', 's', 'v', 'w', 'y', 'z', 'oo', 'pp', 'qq', 'rr', 'xx', 'yy', 'zz']
+zero_one_two_cols = ['aa','bb','cc','dd','ee','ff','gg','hh','ii','jj','kk','ll','mm','nn']
+categorical_cols = ['a', 'c', 'd', 'e', 'f', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'ss', 'tt', 'uu']
 numeric_cols = ['b', 'g', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
        'z', 'aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg', 'hh', 'ii',
        'jj', 'kk', 'll', 'mm', 'nn', 'oo', 'pp', 'qq', 'rr', 'vv',
-       'ww', 'xx', 'yy', 'zz', 'aaa']
+       'ww', 'xx', 'yy', 'zz']
+
+cols = task.columns
+num_cols = task._get_numeric_data().columns
+list(set(cols) - set(num_cols))
+
+for col in categorical_cols:
+    task[col] = task[col].astype('category')
+    quiz[col] = quiz[col].astype('category')
 
 numeric_indices = []
 for i, letter in enumerate(alphabet2):
     if letter in numeric_cols:
         numeric_indices.append(i)
-    
-# [1, 6, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
-# 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 47, 48, 49, 50, 51, 52]
 
-train_labels = np.array(train['aaa']).astype(int)
+train_labels = np.array(task['aaa']).astype(int)
+
+
+# In[27]:
+
+train_dummies = pd.get_dummies(task[categorical_cols + zero_one_two_cols + boolean_cols])
+quiz_dummies = pd.get_dummies(quiz[categorical_cols + zero_one_two_cols + boolean_cols])
+
+train_dummies = train_dummies[[col for col in train_dummies.columns if col in quiz_dummies.columns]]
+quiz_dummies = quiz_dummies[[col for col in quiz_dummies.columns if col in train_dummies.columns]]
+
+train_dummies_plus_continuous = pd.concat([train_dummies, task[continuous_cols]], axis=1)
+
+
+# In[29]:
+
+x_train, x_test, y_train, y_test = train_test_split(task, task.ix[:,-1], train_size=0.8, test_size=0.05)
+
+rf = RandomForestClassifier(n_jobs=3, n_estimators=100, max_features=50, max_depth=200)
+x_train, x_test, y_train, y_test = train_test_split(train_dummies_plus_continuous, task.ix[:,-1], train_size=0.8, test_size=0.05)
+rf_trained = rf.fit(x_train, y_train)
+
+preds = rf.predict()
+
+
+log = LogisticRegression()
+log_trained = log.fit(x_train[continuous_cols], y_train)
+
+cross_val_score(log_trained, x_test, y_test, cv=2)
+
+preds_2 = log.predict(x_test)
+
+
+# In[21]:
+
+task
 
 
 # In[ ]:

@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 import csv
 import math
@@ -27,14 +27,14 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.ensemble import VotingClassifier
 
 
-# In[3]:
+# In[2]:
 
 # Load
 train = pandas.read_csv('data.csv')
 test = pandas.read_csv('quiz.csv')
 
 
-# In[4]:
+# In[3]:
 
 # Name Columns (53 total)
 alphabet = list(string.ascii_lowercase)
@@ -118,7 +118,7 @@ e = cross_val(clf, train[coorelated_features], train_labels)
 print(e)   # [ 0.76499961  0.76318625]   regular KNN on features that are coorelated with the label --> ~76%
 
 
-# In[8]:
+# In[5]:
 
 # Training error using categorical columns
 
@@ -152,7 +152,7 @@ preds = trained.predict(np.array(test[numeric_cols[:-1]]))
 write_results(preds)
 
 
-# In[ ]:
+# In[6]:
 
 # Make test predictions using voting with multiple classifiers
 enc_train = encode_as_labels(train[categorical_cols])
@@ -169,7 +169,7 @@ print(train[numeric_cols].shape, train[categorical_cols].shape)
 print(result.shape)
 
 clf1 = LogisticRegression(random_state=1)
-clf2 = RandomForestClassifier(random_state=1, max_depth=5)
+clf2 = RandomForestClassifier(n_estimators=100, max_features=50, max_depth=200)
 clf3 = GaussianNB()
 
 eclf = VotingClassifier([('lr', clf1), ('rf', clf2), ('gnb', clf3)], voting='hard')
